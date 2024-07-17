@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tres en raya</title>
+<style>
+/* Estilo global para todos los elementos */
+* {
+    color: white;
+    font-family: sans-serif;
+    transition: 0.2s ease-in-out;
+    user-select: none;
+}
+
+/* Estilo para centrar elementos */
+.align {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo para el cuerpo del documento */
+body {
+    background: url('c3.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    text-align: center;
+    padding-top: 5vh;
+}
+
+/* Estilo para el contenedor del turno */
+.turn-container {
+    width: 170px;
+    height: 80px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    position: relative;
+}
+
+/* Estilo para el título dentro del contenedor del turno */
+.turn-container h3 {
+    margin: 0;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+/* Estilo para las cajas dentro del contenedor del turno */
+.turn-container .turn-box {
+    border: 5px solid #000;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+/* Quita el borde derecho de las cajas pares */
+.turn-container .turn-box:nth-child(even) {
+    border-right: none;
+}
+
+/* Fondo de la caja de turno */
+.bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 85px;
+    height: 40px;
+    background-color: #ff462e;
+    z-index: -1;
+}
+
+/* Estilo para la cuadrícula principal del juego */
+.main-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 250px;
+    width: 250px;
+    margin: 30px auto;
+    border: 3px solid #000;
+}
+
+/* Estilo para cada celda de la cuadrícula */
+.box {
+    cursor: pointer;
+    font-size: 2rem;
+    font-weight: 700;
+    border: 3px solid #000;
+}
+
+/* Estilo para el hover de cada celda */
+.box:hover {
+    background-color: #ff462e;
+}
+
+/* Estilo para el botón de "Volver a jugar" */
+#play-again {
+    background-color: #ff462e;
+    padding: 10px 25px;
+    border: none;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+}
+
+/* Estilo para el hover del botón de "Volver a jugar" */
+#play-again:hover {
+    padding: 10px 40px;
+    background-color: #d9cb08;
+    color: #000;
+}
+
+/* Estilo para el botón de "Volver" */
+.volver-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ffc107;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+/* Estiloooo para el hover del botón de "Volver" */
+.volver-button:hover {
+    background-color: #e0a800;
+}
+</style>
+</head>
+<body>
+    <!-- Botón para volver a la página anterior -->
+    <button class="btn btn-warning btn-lg volver-button" onclick="window.location.href='index.html'">Volver</button>
+    <!-- Contenedor para mostrar el turno actual -->
+    <div class="turn-container">
+        <h3>Desafío 1:</h3>
+        <div class="turn-box align">X</div>
+        <div class="turn-box align">O</div>
+        <div class="bg"></div>
+    </div>
+    <!-- Cuadrícula principal del juego -->
+    <div class="main-grid">
+        <div class="box align">0</div>
+        <div class="box align">1</div>
+        <div class="box align">2</div>
+        <div class="box align">3</div>
+        <div class="box align">4</div>
+        <div class="box align">5</div>
+        <div class="box align">6</div>
+        <div class="box align">7</div>
+        <div class="box align">8</div>
+    </div>
+    <!-- Elemento para mostrar el resultado del juego -->
+    <h2 id="results"></h2>
+    <!-- Botón para reiniciar el juego -->
+    <button id="play-again">Volver a jugar</button>
+    <script>
+        // Selecciona todas las celdas de la cuadrícula
+        let boxes = document.querySelectorAll(".box");
+        // Inicializa el turno en "X" y el estado del juego en activo
+        let turn = "X";
+        let isGameOver = false;
+        // Asigna un evento de clic a cada celda de la cuadrícula
+        boxes.forEach(e =>{
+            // Vacía el contenido de la celda
+            e.innerHTML = "";
+            e.addEventListener("click", ()=>{
+                // Si el juego no ha terminado y la celda está vacía
+                if(!isGameOver && e.innerHTML === ""){
+                    // Establece el contenido de la celda al turno actual
+                    e.innerHTML = turn;
+                    // Verifica si hay un ganador
+                    cheakWin();
+                    // Verifica si hay un empate
+                    cheakDraw();
+                    // Cambia el turno
+                    changeTurn();
+                }
+            })
+        })
+
+        // Función para cambiar el turno
+        function changeTurn(){
+            if(turn === "X"){
+                turn = "O";
+                document.querySelector(".bg").style.left = "85px";
+            }
+            else{
+                turn = "X";
+                document.querySelector(".bg").style.left = "0";
+            }
+        }
+
+        // Función para verificar si hay un ganador
+        function cheakWin(){
+            // Condiciones de victoria
+            let winConditions = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ]
+            // Recorre todas las condiciones de victoria
+            for(let i = 0; i<winConditions.length; i++){
+                let v0 = boxes[winConditions[i][0]].innerHTML;
+                let v1 = boxes[winConditions[i][1]].innerHTML;
+                let v2 = boxes[winConditions[i][2]].innerHTML;
+
+                // Si los valores no están vacíos y son iguales, hay un ganador
+                if(v0 != "" && v0 === v1 && v0 === v2){
+                    isGameOver = true;
+                    document.querySelector("#results").innerHTML = turn + " Ganaste";
+                    document.querySelector("#play-again").style.display = "inline"
+
+                    // Resalta las celdas ganadoras
+                    for(j = 0; j<3; j++){
+                        boxes[winConditions[i][j]].style.backgroundColor = "#d9cb08"
+                        boxes[winConditions[i][j]].style.color = "#000"
+                    }
+                }
+            }
+        }
+
+        // Función para verificar si hay un empate
+        function cheakDraw(){
+            if(!isGameOver){
+                let isDraw = true;
+                // Recorre todas las celdas para verificar si están llenas
+                boxes.forEach(e =>{
+                    if(e.innerHTML === "") isDraw = false;
+                })
+
+                // Si todas las celdas están llenas y no hay ganador, es un empate
+                if(isDraw){
+                    isGameOver = true;
+                    document.querySelector("#results").innerHTML = "Comenzar de nuevo";
+                    document.querySelector("#play-again").style.display = "inline"
+                }
+            }
+        }
+
+        // Evento para el botón de "Volver a jugar"
+        document.querySelector("#play-again").addEventListener("click", ()=>{
+            isGameOver = false;
+            turn = "X";
+            document.querySelector(".bg").style.left = "0";
+            document.querySelector("#results").innerHTML = "";
+            document.querySelector("#play-again").style.display = "none";
+
+            // Reinicia todas las celdas
+            boxes.forEach(e =>{
+                e.innerHTML = "";
+                e.style.removeProperty("background-color");
+                e.style.color = "#fff";
+            })
+        })
+    </script>
+</body>
+</html>

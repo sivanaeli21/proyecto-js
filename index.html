@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selección de opciones</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            color: aliceblue;
+        }
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        video {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            margin-top: 20%;
+        }
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <video autoplay muted loop>
+            <source src="c2.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="content">
+        <button class="btn btn-danger btn-lg logout-button" id="logout">X</button>
+        <div class="container">
+            <h1 class="mb-4">Bienvenido</h1>
+            <h3>Selecciona una opción</h3>
+            <a href="calculadora.html" class="btn btn-info btn-lg mb-2">Calculadora</a>
+            <a href="juego.html" class="btn btn-warning btn-lg mb-2">Juego</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

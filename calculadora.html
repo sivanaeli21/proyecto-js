@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Cientifica</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    /* Estilo para el cuerpo del documento */
+    body {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        user-select: none;
+        /* background: #ecf0f3; */
+        background: url('c6.png') no-repeat center center fixed;
+    }
+
+    /* Estilo para el contenedor principal */
+    .container {
+        margin-left: 1.8em;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 13px 13px 20px #cbced1,
+            -13px -13px 20px #ffffff;
+    }
+
+    /* Estilo para el contenido */
+    .content {
+        width: 100%;
+        margin-top: 1.7em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    /* Estilo para los botones de la fila */
+    .row button {
+        width: 60px;
+        height: 30px;
+        font-size: 16px;
+        border: none;
+        outline: none;
+        margin: 5px;
+        border-radius: 4px;
+        transition: .1s;
+        box-shadow: 5px 5px 8px #00000020,
+            -5px -5px 8px #ffff;
+    }
+
+    /* Estilo para el hover de los botones */
+    .row button:hover {
+        box-shadow: inset 5px 5px 8px rgba(16, 16, 16, .1),
+            inset -5px -5px 8px #fff;
+        background: #fff;
+    }
+
+    /* Estilo para la pantalla de la calculadora */
+    .display #screen {
+        margin-bottom: .5em;
+        width: auto;
+        height: 70px;
+        font-size: 35px;
+        outline: none;
+        border: none;
+        text-align: right;
+        padding-right: .5em;
+        background: #ecf0f3;
+        border-radius: 6px;
+        box-shadow: inset 8px 8px 8px #cbced1,
+            inset -8px -8px 8px #ffffff;
+    }
+
+    /* Estilo para el botón de igual */
+    #eval {
+        background: #db4aff;
+        color: #fff;
+        box-shadow: inset 5px 5px 8px #ff66e5,
+            inset -5px -5px 8px #de00e6;
+    }
+
+    /* Estilo para el hover del botón de igual */
+    #eval:hover {
+        box-shadow: inset 5px 5px 8px #de00e6,
+            inset -5px -5px 8px #de00e6;
+    }
+
+    /* Estilo para el botón de AC (borrar todo) */
+    #ac {
+        background: #33ccb8;
+        color: #fff;
+    }
+
+    /* Estilo para el hover del botón de AC */
+    #ac:hover {
+        box-shadow: inset 5px 5px 8px #2eb88f,
+            inset -5px -5px 8px #33ccb8;
+    }
+
+    /* Estilo para el botón de CE (borrar un carácter) */
+    #ce {
+        background: #e60058;
+        color: #fff;
+    }
+
+    /* Estilo para el hover del botón de CE */
+    #ce:hover {
+        box-shadow: inset 5px 5px 8px #df2362,
+            inset -5px -5px 8px #e60058;
+    }
+
+    /* Estilo para el botón Volver */
+    .volver-button {
+        width: auto;
+        height: 30px;
+        font-size: 16px;
+        border: none;
+        outline: none;
+        margin: 5px;
+        border-radius: 4px;
+        background-color: #ffc107;
+        color: white;
+        transition: .1s;
+        box-shadow: 5px 5px 8px #00000020,
+            -5px -5px 8px #ffff;
+    }
+
+    .volver-button:hover {
+        background-color: #e0a800;
+    }
+</style>
+
+<body>
+    <!-- Contenedor principal de la calculadora -->
+    <div class="container">
+        <!-- Pantalla de la calculadora -->
+        <div class="display">
+            <input id="screen" type="text" placeholder="0">
+        </div>
+
+        <!-- Botones de la calculadora -->
+        <div class="btns">
+            <!-- Fila de botones -->
+            <div class="row">
+                <button id="ce" onclick="backspc()">CE</button>
+                <button onclick="fact()">x!</button>
+                <button class="btn">(</button>
+                <button class="btn">)</button>
+                <button class="btn">%</button>
+                <button id="ac" onclick="screen.value=''">AC</button>
+            </div>
+
+            <!-- Fila de botones -->
+            <div class="row">
+                <button onclick="sin()">sin</button>
+                <button onclick="pi()">π</button>
+                <button class="btn">7</button>
+                <button class="btn">8</button>
+                <button class="btn">9</button>
+                <button class="btn">÷</button>
+            </div>
+
+            <!-- Fila de botones -->
+            <div class="row">
+                <button onclick="cos()">cos</button>
+                <button onclick="log()">log</button>
+                <button class="btn">4</button>
+                <button class="btn">5</button>
+                <button class="btn">6</button>
+                <button class="btn">×</button>
+            </div>
+
+            <!-- Fila de botones -->
+            <div class="row">
+                <button onclick="tan()">tan</button>
+                <button onclick="sqrt()">√</button>
+                <button class="btn">1</button>
+                <button class="btn">2</button>
+                <button class="btn">3</button>
+                <button class="btn">-</button>
+            </div>
+
+            <!-- Fila de botones -->
+            <div class="row">
+                <button onclick="e()">e</button>
+                <button onclick="pow()">x <span style="position: relative; bottom: .4em; right: .1em;">y</span></button>
+                <button class="btn">0</button>
+                <button class="btn">.</button>
+                <button id="eval" onclick="screen.value=eval(screen.value)">=</button>
+                <button class="btn">+</button>
+            </div>
+            
+            <!-- Fila de botón Volver -->
+            <div class="row">
+                <center>
+                    <button class="btn volver-button" onclick="window.location.href='index.html'">Volver</button>
+                </center>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // Selecciona la pantalla de la calculadora
+    var screen = document.querySelector('#screen');
+    // Selecciona todos los botones con la clase 'btn'
+    var btn = document.querySelectorAll('.btn');
+
+    /============ Para obtener el valor del botón, usamos un bucle for ============/
+    for (item of btn) {
+        // Asigna un evento de clic a cada botón
+        item.addEventListener('click', (e) => {
+            // Obtiene el texto del botón clicado
+            btntext = e.target.innerText;
+
+            // Si el botón es '×', lo convierte en '*'
+            if (btntext == '×') {
+                btntext = '*';
+            }
+
+            // Si el botón es '÷', lo convierte en '/'
+            if (btntext == '÷') {
+                btntext = '/';
+            }
+            // Añade el texto del botón a la pantalla
+            screen.value += btntext;
+        });
+    }
+
+    // Función para calcular el seno
+    function sin() {
+        screen.value = Math.sin(screen.value);
+    }
+    // Función para calcular el coseno
+    function cos() {
+        screen.value = Math.cos(screen.value);
+    }
+    // Función para calcular la tangente
+    function tan() {
+        screen.value = Math.tan(screen.value);
+    }
+    // Función para calcular la potencia
+    function pow() {
+        screen.value = Math.pow(screen.value, 2);
+    }
+    // Función para calcular la raíz cuadrada
+    function sqrt() {
+        screen.value = Math.sqrt(screen.value, 2);
+    }
+    // Función para calcular el logaritmo
+    function log() {
+        screen.value = Math.log(screen.value);
+    }
+    // Función para obtener el valor de pi
+    function pi() {
+        screen.value = 3.14159265359;
+    }
+    // Función para obtener el valor de e
+    function e() {
+        screen.value = 2.71828182846;
+    }
+
+    // Función para calcular el factorial
+    function fact() {
+        var i, num, f;
+        f = 1;
+        num = screen.value;
+        for (i = 1; i <= num; i++) {
+            f = f * i;
+        }
+
+        i = i - 1;
+
+        screen.value = f;
+    }
+
+    // Función para borrar el último carácter
+    function backspc() {
+        screen.value = screen.value.substr(0, screen.value.length - 1);
+    }
+</script>
+
+</html>
